@@ -1,1 +1,0 @@
-[(ATIVIDADE AULA 3) Arquitetura de Software](ATIVIDADE-AULA-3.md)
