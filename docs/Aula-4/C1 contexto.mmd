@@ -1,0 +1,11 @@
+flowchart LR
+    Vendedor(["Vendedor<br>registra pedidos"])
+    Administrador(["Administrador<br>cadastra e remove produtos"])
+    Estoque(["Estoque<br>controla entradas e saidas"])
+    Sistema["Sistema de Vendas"]
+
+    Vendedor -->|faz pedido| Sistema
+    Administrador -->|cadastra produto| Sistema
+    Estoque -->|atualiza estoque| Sistema
+
+    style Sistema fill:#FFFF00,stroke:#333,stroke-width:2px,color:#000
