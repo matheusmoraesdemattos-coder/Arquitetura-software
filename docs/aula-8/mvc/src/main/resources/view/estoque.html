@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Estoque</title>
+</head>
+<body>
+
+    <header>
+        <h1>Estoque</h1>
+    </header>
+
+    <nav>
+        <a th:href="@{/}">Início</a> |
+        <a th:href="@{/products}">Produtos</a>
+    </nav>
+
+    <section>
+        <h2>Entrada de estoque</h2>
+        <form th:action="@{/estoque/entrada}" method="post">
+            <div>
+                <label for="entradaProduct">Produto</label>
+                <select id="entradaProduct" name="productId" required>
+                    <option th:each="product : ${products}"
+                            th:value="${product.id}"
+                            th:text="${product.name} + ' (' + ${product.status} + ')'"></option>
+                </select>
+            </div>
+            <div>
+                <label for="entradaQtd">Quantidade</label>
+                <input type="number" id="entradaQtd" name="quantidade" min="1" required>
+            </div>
+            <button type="submit">Registrar entrada</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Saída de estoque</h2>
+        <form th:action="@{/estoque/saida}" method="post">
+            <div>
+                <label for="saidaProduct">Produto</label>
+                <select id="saidaProduct" name="productId" required>
+                    <option th:each="product : ${products}"
+                            th:value="${product.id}"
+                            th:text="${product.name} + ' (qtd: ' + ${product.quantidade} + ')'"></option>
+                </select>
+            </div>
+            <div>
+                <label for="saidaQtd">Quantidade</label>
+                <input type="number" id="saidaQtd" name="quantidade" min="1" required>
+            </div>
+            <button type="submit">Registrar saída</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Situação atual dos produtos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.quantidade}"></td>
+                    <td th:text="${product.status}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        Projeto de compreensão do MVC
+    </footer>
+
+</body>
+</html>

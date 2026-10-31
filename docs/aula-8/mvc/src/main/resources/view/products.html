@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Produtos</title>
+</head>
+<body>
+
+    <header>
+        <h1>Produtos</h1>
+    </header>
+
+    <nav>
+        <a th:href="@{/}">Início</a> |
+        <a th:href="@{/estoque}">Estoque</a>
+    </nav>
+
+    <section>
+        <h2>Cadastrar novo produto</h2>
+        <form th:action="@{/products}" method="post">
+            <div>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="price">Preço</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+            </div>
+            <button type="submit">Salvar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Produtos cadastrados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Status</th>
+                    <th>Ações (Administrador)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.quantidade}"></td>
+                    <td th:text="${product.status}"></td>
+                    <td>
+                        <form th:action="@{/products/descontinuar}" method="post"
+                              th:if="${product.status.name() != 'DESCONTINUADO'}">
+                            <input type="hidden" name="id" th:value="${product.id}">
+                            <select name="perfil">
+                                <option value="ADMINISTRADOR">Administrador</option>
+                                <option value="ESTOQUE">Estoque</option>
+                                <option value="VENDEDOR">Vendedor</option>
+                            </select>
+                            <button type="submit">Descontinuar</button>
+                        </form>
+                        <span th:if="${product.status.name() == 'DESCONTINUADO'}">—</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        Projeto de compreensão do MVC
+    </footer>
+
+</body>
+</html>

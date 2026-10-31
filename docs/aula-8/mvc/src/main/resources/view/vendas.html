@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Vendas</title>
+</head>
+<body>
+
+    <header>
+        <h1>Vendas</h1>
+    </header>
+
+    <nav>
+        <a th:href="@{/}">Início</a> |
+        <a th:href="@{/products}">Produtos</a> |
+        <a th:href="@{/estoque}">Estoque</a>
+    </nav>
+
+    <section>
+        <h2>Fechar pedido</h2>
+        <form th:action="@{/vendas}" method="post">
+            <div>
+                <label for="productId">Produto</label>
+                <select id="productId" name="productId" required>
+                    <option th:each="product : ${products}"
+                            th:value="${product.id}"
+                            th:text="${product.name} + ' - R$ ' + ${product.price}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="quantidade">Quantidade</label>
+                <input type="number" id="quantidade" name="quantidade" min="1" required>
+            </div>
+            <button type="submit">Fechar pedido</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Pedidos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th>ID da Fatura (hub)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${pedidos}">
+                    <td th:text="${pedido.id}"></td>
+                    <td th:text="${pedido.productName}"></td>
+                    <td th:text="${pedido.quantidade}"></td>
+                    <td th:text="${pedido.valor}"></td>
+                    <td th:text="${pedido.faturaId}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        Projeto de compreensão do MVC
+    </footer>
+
+</body>
+</html>
