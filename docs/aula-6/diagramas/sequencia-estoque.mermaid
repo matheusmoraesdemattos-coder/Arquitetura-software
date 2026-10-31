@@ -1,0 +1,35 @@
+sequenceDiagram
+    actor Estoque as Usuário Estoque
+    participant EC as EstoqueController
+    participant ES as EstoqueService
+    participant PR as ProductRepository
+
+    Note over Estoque,PR: Rotina de ENTRADA de estoque
+    Estoque->>EC: POST /estoque/entrada (productId, quantidade)
+    EC->>ES: entrada(productId, quantidade)
+    ES->>PR: findById(productId)
+    PR-->>ES: Product
+    alt Produto DESCONTINUADO
+        ES-->>EC: IllegalStateException
+        EC-->>Estoque: Tela de erro
+    else Produto pode receber entrada
+        ES->>ES: quantidade += entrada; se > 0 então DISPONIVEL
+        ES->>PR: save(Product)
+        ES-->>EC: Product atualizado
+        EC-->>Estoque: redirect /estoque
+    end
+
+    Note over Estoque,PR: Rotina de SAÍDA de estoque
+    Estoque->>EC: POST /estoque/saida (productId, quantidade)
+    EC->>ES: saida(productId, quantidade)
+    ES->>PR: findById(productId)
+    PR-->>ES: Product
+    alt DESCONTINUADO ou sem estoque disponível
+        ES-->>EC: IllegalStateException
+        EC-->>Estoque: Tela de erro
+    else Saída permitida
+        ES->>ES: quantidade -= saída; se == 0 então INDISPONIVEL
+        ES->>PR: save(Product)
+        ES-->>EC: Product atualizado
+        EC-->>Estoque: redirect /estoque
+    end

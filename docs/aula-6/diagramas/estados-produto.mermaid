@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> INDISPONIVEL: criar produto (estoque = 0)
+
+    INDISPONIVEL --> DISPONIVEL: entrada de estoque (sai de zero)
+    DISPONIVEL --> INDISPONIVEL: saída de estoque (estoque zera)
+
+    INDISPONIVEL --> DESCONTINUADO: descontinuar (somente ADM)
+    DISPONIVEL --> DESCONTINUADO: descontinuar (somente ADM)
+
+    DESCONTINUADO --> [*]
+
+    note right of DESCONTINUADO
+        Transição exclusiva do administrador.
+        Produto descontinuado não pode mais
+        ser movimentado no estoque.
+    end note

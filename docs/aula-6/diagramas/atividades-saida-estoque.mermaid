@@ -1,0 +1,15 @@
+flowchart TD
+    A([Início: solicitar saída de estoque]) --> B[Informar produto e quantidade]
+    B --> C{Produto está DESCONTINUADO?}
+    C -- Sim --> X[Bloquear: produto descontinuado não pode ser movimentado]
+    C -- Não --> D{Status DISPONIVEL e quantidade suficiente?}
+    D -- Não --> Y[Bloquear: estoque insuficiente]
+    D -- Sim --> E[Subtrair quantidade do estoque]
+    E --> F{Estoque chegou a zero?}
+    F -- Sim --> G[Status do produto passa a INDISPONIVEL]
+    F -- Não --> H[Produto continua DISPONIVEL]
+    G --> I[Registrar movimentação de SAÍDA]
+    H --> I[Registrar movimentação de SAÍDA]
+    I --> Z([Fim])
+    X --> Z
+    Y --> Z
